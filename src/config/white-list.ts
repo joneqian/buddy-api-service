@@ -1,0 +1,36 @@
+import { registerAs } from '@nestjs/config';
+
+export default registerAs('while_list', () => ({
+  token: [
+    '/api/oss/upload-oss',
+    '/api/project/init-company-project-config',
+    '/api/employee/get-captcha',
+    '/api/employee/employee-login',
+    '/api/customer/customer-login',
+    '/api/wx/get-access-token',
+    '/api/device/get-weitai-access-token',
+    '/api/dictionary/get-project-list',
+    '/api/employee/send-login-sms-code',
+    '/api/project/send-reg-sms-code',
+    '/api/project/create-open-project',
+    '/api/employee/reset-employee-password',
+    '/api/project/check-reg-mobile',
+    '/api/project/check-sms-code',
+    '/api/payment/notify/wx',
+    '/api/payment/notify/ali',
+  ],
+  sign: [
+    '/api/oss/upload-oss',
+    '/api/project/init-company-project-config',
+    '/api/employee/get-captcha',
+    '/api/agent/file-loader-by-moonshot',
+    '/api/agent/file-to-markdown',
+    '/api/wx/wx-oauth-callback',
+    '/api/wx/get-access-token',
+    '/api/device/get-weitai-access-token',
+    '/api/dictionary/get-project-list',
+    '/api/customer/import-customer',
+    '/api/payment/notify/wx',
+    '/api/payment/notify/ali',
+  ],
+}));
