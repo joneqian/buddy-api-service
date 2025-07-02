@@ -2,7 +2,7 @@
  * @Author: leyi leyi@myun.info
  * @Date: 2025-06-04 11:30:58
  * @LastEditors: leyi leyi@myun.info
- * @LastEditTime: 2025-07-02 15:05:05
+ * @LastEditTime: 2025-07-02 17:47:40
  * @FilePath: /buddy-api-service/src/modules/wecom-robot/wecom-robot.dto.ts
  * @Description:
  *
@@ -19,6 +19,7 @@ import {
   IsDate,
   IsEnum,
   IsNumber,
+  IsObject,
   IsArray,
   ArrayMinSize,
   ValidateNested,
@@ -134,6 +135,16 @@ class PersonalInfoDTO {
   @IsInt()
   @IsIn([0, 1], { message: 'login_status必须为0或者1' })
   login_status: number;
+
+  // personal_info
+  @ApiProperty({
+    description: '个人信息',
+    example: '个人信息',
+    type: Object,
+  })
+  @IsNotEmpty()
+  @IsObject()
+  personal_info: object;
 }
 
 export class SyncWecomRobotLoginInfoDTO extends BaseDTO {

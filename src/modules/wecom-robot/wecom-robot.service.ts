@@ -2,7 +2,7 @@
  * @Author: leyi leyi@myun.info
  * @Date: 2025-06-04 11:35:22
  * @LastEditors: leyi leyi@myun.info
- * @LastEditTime: 2025-07-02 15:06:52
+ * @LastEditTime: 2025-07-02 17:54:12
  * @FilePath: /buddy-api-service/src/modules/wecom-robot/wecom-robot.service.ts
  * @Description:
  *
@@ -133,6 +133,7 @@ export class WecomRobotService {
   }
 
   async syncWecomRobotLoginInfo(requestBody: SyncWecomRobotLoginInfoDTO, user: any) {
+    const created_by = user?.id ?? DEFAULT_USER_ID;
     const updated_by = user?.id ?? DEFAULT_USER_ID;
     const { mac_address, personal_info_list } = requestBody;
 
@@ -145,8 +146,8 @@ export class WecomRobotService {
       throw new Error('服务器不存在');
     }
 
-    for (const personal_info of personal_info_list) {
-      const { wecom_login_port, wecom_pid, vword_user_id, login_status } = personal_info;
+    for (const personal_info_item of personal_info_list) {
+      const { wecom_login_port, wecom_pid, vword_user_id, login_status, personal_info } = personal_info_item;
 
       const exist_login = await this.tWecomRobotLogin.findOne({
         attributes: ex_attributes,
@@ -170,6 +171,79 @@ export class WecomRobotService {
       await this.tWecomRobotLogin.update(update_data, {
         where: { id: exist_login.id },
       });
+
+      const {
+        alias,
+        avatar_url,
+        corp_id,
+        corp_name,
+        corp_short_name,
+        dept_id,
+        dept_name,
+        email,
+        job_name,
+        mobile,
+        nick_name,
+        position,
+        real_name,
+        sex,
+        user_id,
+      } = personal_info as any;
+
+      const default_data: any = _.omitBy(
+        {
+          vwork_user_id: user_id,
+          alias,
+          avatar_url,
+          corp_id,
+          corp_name,
+          corp_short_name,
+          dept_id,
+          dept_name,
+          email,
+          job_name,
+          mobile,
+          nick_name,
+          position,
+          real_name,
+          sex: parseInt(sex),
+          created_by,
+          updated_by,
+        },
+        _.isNil,
+      );
+
+      const [wecom_robot, created_wecom_robot] = await this.tWecomRobot.findOrCreate({
+        attributes: ex_attributes,
+        where: { vwork_user_id: user_id },
+        defaults: default_data,
+      });
+
+      if (!created_wecom_robot) {
+        const update_data = _.omitBy(
+          {
+            alias,
+            avatar_url,
+            corp_id,
+            corp_name,
+            corp_short_name,
+            dept_id,
+            dept_name,
+            email,
+            job_name,
+            mobile,
+            nick_name,
+            position,
+            real_name,
+            sex: parseInt(sex),
+            updated_by,
+          },
+          _.isNil,
+        );
+        await this.tWecomRobot.update(update_data, {
+          where: { id: wecom_robot.id },
+        });
+      }
     }
   }
 
