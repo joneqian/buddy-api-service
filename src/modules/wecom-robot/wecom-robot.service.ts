@@ -94,13 +94,13 @@ export class WecomRobotService {
   async upsertWecomRobotLogin(requestBody: UpsertWecomRobotLoginDTO, user: any) {
     const created_by = user?.id ?? DEFAULT_USER_ID;
     const updated_by = user?.id ?? DEFAULT_USER_ID;
-    const { mac_address, wecom_login_port, vword_user_id } = requestBody;
+    const { mac_address, wecom_login_port, vwork_user_id } = requestBody;
 
     const default_data: any = _.omitBy(
       {
         mac_address,
         wecom_login_port,
-        vword_user_id,
+        vwork_user_id,
         created_by,
         updated_by,
       },
@@ -109,7 +109,7 @@ export class WecomRobotService {
 
     const [login, created_login] = await this.tWecomRobotLogin.findOrCreate({
       attributes: ex_attributes,
-      where: { vword_user_id },
+      where: { vwork_user_id },
       defaults: default_data,
       raw: true,
     });
@@ -147,11 +147,11 @@ export class WecomRobotService {
     }
 
     for (const personal_info_item of personal_info_list) {
-      const { wecom_login_port, wecom_pid, vword_user_id, login_status, personal_info } = personal_info_item;
+      const { wecom_login_port, wecom_pid, vwork_user_id, login_status, personal_info } = personal_info_item;
 
       const exist_login = await this.tWecomRobotLogin.findOne({
         attributes: ex_attributes,
-        where: { mac_address, wecom_login_port, vword_user_id },
+        where: { mac_address, wecom_login_port, vwork_user_id },
       });
 
       if (!exist_login) {
@@ -249,9 +249,9 @@ export class WecomRobotService {
 
   async getWecomRobotLoginQrcode(requestBody: GetWecomRobotLoginQrcodeDTO, user: any) {
     const updated_by = user?.id ?? DEFAULT_USER_ID;
-    const { mac_address, wecom_login_port, vword_user_id } = requestBody;
+    const { mac_address, wecom_login_port, vwork_user_id } = requestBody;
 
-    if (!vword_user_id && !wecom_login_port) {
+    if (!vwork_user_id && !wecom_login_port) {
       throw new Error('用户ID或登录端口不能为空');
     }
 
@@ -259,7 +259,7 @@ export class WecomRobotService {
       {
         mac_address,
         wecom_login_port,
-        vword_user_id,
+        vwork_user_id,
       },
       _.isNil,
     );
@@ -296,7 +296,7 @@ export class WecomRobotService {
     const response: any = await wecom_robot_request.post({
       url: '/wecom-robot/get-wecom-robot-login-qrcode',
       request_data: {
-        vword_user_id: exist_login.vword_user_id,
+        vwork_user_id: exist_login.vwork_user_id,
         wecom_login_port: exist_login.wecom_login_port,
       },
     });
@@ -317,9 +317,9 @@ export class WecomRobotService {
 
   async logoutWecomRobot(requestBody: LogoutWecomRobotDTO, user: any) {
     const updated_by = user?.id ?? DEFAULT_USER_ID;
-    const { mac_address, wecom_login_port, vword_user_id } = requestBody;
+    const { mac_address, wecom_login_port, vwork_user_id } = requestBody;
 
-    if (!vword_user_id && !wecom_login_port) {
+    if (!vwork_user_id && !wecom_login_port) {
       throw new Error('用户ID或登录端口不能为空');
     }
 
@@ -327,13 +327,13 @@ export class WecomRobotService {
       {
         mac_address,
         wecom_login_port,
-        vword_user_id,
+        vwork_user_id,
       },
       _.isNil,
     );
 
     const exist_login: any = await this.tWecomRobotLogin.findOne({
-      attributes: ['id', 'mac_address', 'wecom_login_port', 'vword_user_id'],
+      attributes: ['id', 'mac_address', 'wecom_login_port', 'vwork_user_id'],
       include: [
         {
           required: true,
@@ -363,7 +363,7 @@ export class WecomRobotService {
     await wecom_robot_request.post({
       url: '/wecom-robot/logout',
       request_data: {
-        user_id: exist_login.vword_user_id,
+        user_id: exist_login.vwork_user_id,
         wecom_login_port,
       },
     });
@@ -384,9 +384,9 @@ export class WecomRobotService {
   }
 
   async inputVerifyCode(requestBody: InputVerifyCodeDTO, user: any) {
-    const { mac_address, wecom_login_port, vword_user_id, verify_code } = requestBody;
+    const { mac_address, wecom_login_port, vwork_user_id, verify_code } = requestBody;
 
-    if (!vword_user_id && !wecom_login_port) {
+    if (!vwork_user_id && !wecom_login_port) {
       throw new Error('用户ID或登录端口不能为空');
     }
 
@@ -394,12 +394,12 @@ export class WecomRobotService {
       {
         mac_address,
         wecom_login_port,
-        vword_user_id,
+        vwork_user_id,
       },
       _.isNil,
     );
     const exist_login: any = await this.tWecomRobotLogin.findOne({
-      attributes: ['id', 'mac_address', 'wecom_login_port', 'vword_user_id'],
+      attributes: ['id', 'mac_address', 'wecom_login_port', 'vwork_user_id'],
       include: [
         {
           required: true,

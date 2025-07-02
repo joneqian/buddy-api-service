@@ -2,7 +2,7 @@
  * @Author: leyi leyi@myun.info
  * @Date: 2025-06-04 11:30:58
  * @LastEditors: leyi leyi@myun.info
- * @LastEditTime: 2025-07-02 17:47:40
+ * @LastEditTime: 2025-07-02 17:59:36
  * @FilePath: /buddy-api-service/src/modules/wecom-robot/wecom-robot.dto.ts
  * @Description:
  *
@@ -93,7 +93,7 @@ export class UpsertWecomRobotLoginDTO extends BaseDTO {
   })
   @IsNotEmpty()
   @IsString()
-  vword_user_id: string;
+  vwork_user_id: string;
 }
 
 class PersonalInfoDTO {
@@ -123,7 +123,7 @@ class PersonalInfoDTO {
   })
   @IsNotEmpty()
   @IsString()
-  vword_user_id: string;
+  vwork_user_id: string;
 
   // login_status
   @ApiProperty({
@@ -197,7 +197,7 @@ export class LogoutWecomRobotDTO extends BaseDTO {
   })
   @IsOptional()
   @IsString()
-  vword_user_id?: string;
+  vwork_user_id?: string;
 }
 
 export class LogoutWecomRobotCallBackDTO extends BaseDTO {
@@ -248,7 +248,7 @@ export class GetWecomRobotLoginQrcodeDTO extends BaseDTO {
   })
   @IsOptional()
   @IsString()
-  vword_user_id?: string;
+  vwork_user_id?: string;
 }
 
 export class UpdateNeedVerifyCodeDTO extends BaseDTO {
@@ -311,7 +311,7 @@ export class InputVerifyCodeDTO extends BaseDTO {
   })
   @IsOptional()
   @IsString()
-  vword_user_id?: string;
+  vwork_user_id?: string;
 
   // verify_code
   @ApiProperty({
